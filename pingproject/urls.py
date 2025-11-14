@@ -19,6 +19,7 @@ from django.urls import path
 from visits import views
 
 urlpatterns = [
+    path('', views.health),
     path('ping', views.ping),
     path('visits', views.visits),
 ]

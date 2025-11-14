@@ -9,3 +9,6 @@ def ping(request):
 def visits(request):
     count = Visit.objects.count()
     return HttpResponse(str(count))
+
+def health(request):
+    return HttpResponse("OK")
