@@ -97,3 +97,18 @@ jobs:
       - name: Show logs on failure
         if: failure()
         run: docker compose logs
+
+      - name: Run tests with coverage
+        run: |
+          docker compose run --rm app sh -c "
+            python -m coverage run --source='visits' manage.py test &&
+            python -m coverage report > cov.out &&
+            cat cov.out &&
+            total=\$(tail -n1 cov.out | awk '{print \$NF}' | tr -d '%') &&
+            if [ \"\$total\" -lt 60 ]; then
+              echo \"Coverage \$total% < 60%\" >&2
+              exit 1
+            else
+              echo \"Coverage \$total% >= 60% — OK\"
+            fi
+          "
